@@ -1,9 +1,13 @@
 """오프셋을 수동 커밋하며 메시지를 소비하는 학습용 consumer."""
 import json
 import os
+import sys
 
 from confluent_kafka import Consumer
 from dotenv import load_dotenv
+
+# Windows 콘솔(cp949)에서도 한글/기호가 깨지지 않도록 UTF-8 강제
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 load_dotenv()
 

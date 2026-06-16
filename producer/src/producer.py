@@ -6,12 +6,16 @@
 import argparse
 import json
 import random
+import sys
 import time
 
 from confluent_kafka import Producer
 
 from .config import settings
 from .ecos_client import EcosClient
+
+# Windows 콘솔(cp949)에서도 한글/기호가 깨지지 않도록 UTF-8 강제
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 # mock 모드에서 사용할 가짜 지표 카탈로그
 MOCK_INDICATORS = [
