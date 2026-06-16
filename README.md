@@ -29,7 +29,7 @@ ECOS/KOSIS poller          Kafka              Spark Structured        S3 (Parque
 
 | 단계 | 내용 | 폴더 | 새 기술 | 상태 |
 |------|------|------|---------|------|
-| **Phase 0** | docker-compose로 Kafka 띄우고 `producer → topic → consumer → 오프셋 커밋` | [producer/](producer/), [consumer/](consumer/) | Kafka | ⬜ |
+| **Phase 0** | docker-compose로 Kafka 띄우고 `producer → topic → consumer → 오프셋 커밋` | [producer/](producer/), [consumer/](consumer/) | Kafka | ✅ 동작 검증 |
 | **Phase 1** | consumer를 PySpark Structured Streaming으로 교체, 윈도우 집계 → Parquet | [spark/](spark/) | Spark | ⬜ |
 | **Phase 2** | minikube/kind 위로: Strimzi(Kafka) + Spark Operator + producer CronJob | [k8s/](k8s/) | **K8s** | ⬜ |
 | **Phase 3** | Airflow + KubernetesExecutor로 수집/백필 DAG 오케스트레이션 | [airflow/](airflow/) | K8s·Airflow | ⬜ |
