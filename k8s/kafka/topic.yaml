@@ -1,0 +1,13 @@
+# KafkaTopic CR — Strimzi Topic Operator가 실제 토픽을 생성/관리
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: econ-indicators
+  labels:
+    strimzi.io/cluster: econ-kafka
+spec:
+  topicName: econ.indicators   # 실제 토픽명 (리소스명에 점을 피하려고 분리)
+  partitions: 3                # 로컬 compose(1개)와 달리 3개 → 병렬 소비 실습
+  replicas: 1
+  config:
+    retention.ms: 604800000    # 7일

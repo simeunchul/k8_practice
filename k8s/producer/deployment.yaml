@@ -1,0 +1,42 @@
+# producer를 클러스터 내 상시 실행(streaming). 배치 수집이면 CronJob으로 바꾸면 된다.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: econ-producer
+  labels:
+    app: econ-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: econ-producer
+  template:
+    metadata:
+      labels:
+        app: econ-producer
+    spec:
+      containers:
+        - name: producer
+          image: econ-producer:0.1      # minikube image load / kind load 로 주입
+          imagePullPolicy: IfNotPresent
+          args: ["--mock"]              # 실수집이면 args 비우고 ECOS_API_KEY 주입
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "econ-kafka-kafka-bootstrap:9092"
+            - name: KAFKA_TOPIC
+              value: "econ.indicators"
+            - name: POLL_INTERVAL_SECONDS
+              value: "5"
+            # 실수집 모드일 때 Secret에서 키 주입:
+            # - name: ECOS_API_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: econ-secrets
+            #       key: ECOS_API_KEY
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"

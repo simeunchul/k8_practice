@@ -1,0 +1,36 @@
+# spark-operator가 이 CR을 받아 driver/executor 파드를 띄운다.
+# 사전: helm install spark-operator spark-operator/spark-operator -n econ
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: econ-streaming-agg
+spec:
+  type: Python
+  mode: cluster
+  image: "econ-spark:0.1"          # spark/Dockerfile 로 빌드 후 클러스터에 로드
+  imagePullPolicy: IfNotPresent
+  mainApplicationFile: "local:///opt/spark/work-dir/jobs/streaming_aggregation.py"
+  sparkVersion: "3.5.1"
+  deps:
+    packages:
+      - org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1
+  restartPolicy:
+    type: Always                   # 스트리밍 잡이라 죽으면 재시작
+  driver:
+    cores: 1
+    memory: "512m"
+    serviceAccount: spark
+    env:
+      - name: KAFKA_BOOTSTRAP_SERVERS
+        value: "econ-kafka-kafka-bootstrap:9092"
+      - name: KAFKA_TOPIC
+        value: "econ.indicators"
+      - name: SINK
+        value: "console"           # S3 적재는 Phase 4에서 parquet + s3a 경로로
+  executor:
+    instances: 2                   # 파티션 3개를 나눠 소비
+    cores: 1
+    memory: "512m"
+    env:
+      - name: KAFKA_BOOTSTRAP_SERVERS
+        value: "econ-kafka-kafka-bootstrap:9092"

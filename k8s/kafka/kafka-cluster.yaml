@@ -1,0 +1,44 @@
+# Strimzi 기반 Kafka 클러스터 (KRaft 모드, Zookeeper 없음)
+# 사전: kubectl create -f 'https://strimzi.io/install/latest?namespace=econ' -n econ
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: dual-role
+  labels:
+    strimzi.io/cluster: econ-kafka
+spec:
+  replicas: 1
+  roles:
+    - controller
+    - broker
+  storage:
+    type: ephemeral        # 토이용. 운영은 persistent-claim 사용
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: econ-kafka
+  annotations:
+    strimzi.io/node-pools: enabled
+    strimzi.io/kraft: enabled
+spec:
+  kafka:
+    version: 3.9.0
+    metadataVersion: 3.9-IV0
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+    config:
+      # 단일 노드 토이라 모든 복제 계수를 1로
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+      default.replication.factor: 1
+      min.insync.replicas: 1
+  entityOperator:
+    topicOperator: {}      # KafkaTopic CR로 토픽을 선언적으로 관리
+    userOperator: {}
+# 클러스터 내부 부트스트랩 주소: econ-kafka-kafka-bootstrap:9092
