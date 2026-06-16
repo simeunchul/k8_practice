@@ -30,10 +30,10 @@ ECOS/KOSIS poller          Kafka              Spark Structured        S3 (Parque
 | 단계 | 내용 | 폴더 | 새 기술 | 상태 |
 |------|------|------|---------|------|
 | **Phase 0** | docker-compose로 Kafka 띄우고 `producer → topic → consumer → 오프셋 커밋` | [producer/](producer/), [consumer/](consumer/) | Kafka | ✅ 동작 검증 |
-| **Phase 1** | consumer를 PySpark Structured Streaming으로 교체, 윈도우 집계 → Parquet | [spark/](spark/) | Spark | ⬜ |
-| **Phase 2** | minikube/kind 위로: Strimzi(Kafka) + Spark Operator + producer CronJob | [k8s/](k8s/) | **K8s** | ⬜ |
-| **Phase 3** | Airflow + KubernetesExecutor로 수집/백필 DAG 오케스트레이션 | [airflow/](airflow/) | K8s·Airflow | ⬜ |
-| **Phase 4** | eksctl/Terraform으로 EKS 승격, S3 적재. 하루 켜고 스크린샷 후 destroy | [aws/](aws/) | AWS | ⬜ |
+| **Phase 1** | consumer를 PySpark Structured Streaming으로 교체, 윈도우 집계 → Parquet | [spark/](spark/) | Spark | ✅ 동작 검증 |
+| **Phase 2** | minikube/kind 위로: Strimzi(Kafka) + Spark Operator + producer | [k8s/](k8s/) | **K8s** | 📝 작성 완료 (클러스터 필요) |
+| **Phase 3** | Airflow + KubernetesExecutor로 수집/백필 DAG 오케스트레이션 | [airflow/](airflow/) | K8s·Airflow | 📝 작성 완료 (클러스터 필요) |
+| **Phase 4** | eksctl/Terraform으로 EKS 승격, S3 적재. 하루 켜고 스크린샷 후 destroy | [aws/](aws/) | AWS | 📝 작성 완료 (AWS 계정 필요) |
 
 > 시간이 빠듯하면 Phase 0~2(Kafka + Spark + K8s)까지만 해도 "4종 중 3종 손댐 + AWS는 설계까지"가 된다.
 > Phase 4는 최악의 경우 README의 아키텍처 + IaC 코드만 있어도 어필 가능.

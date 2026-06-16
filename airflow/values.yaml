@@ -1,0 +1,49 @@
+# apache-airflow/airflow Helm 차트용 values (KubernetesExecutor)
+# 설치: helm install airflow apache-airflow/airflow -n econ -f values.yaml --create-namespace
+
+# 태스크마다 파드를 띄우는 실행기 → 면접관이 추천한 핵심 구성
+executor: KubernetesExecutor
+
+# KubernetesExecutor는 Celery/Redis/Flower 불필요
+redis:
+  enabled: false
+flower:
+  enabled: false
+
+# 메타DB (토이는 차트 내장 postgres로 충분)
+postgresql:
+  enabled: true
+
+# DAG 전달: 이 깃 레포의 airflow/dags 를 gitSync로 동기화
+dags:
+  gitSync:
+    enabled: true
+    repo: https://github.com/<your-id>/k8_practice.git   # TODO: 본인 레포로
+    branch: main
+    subPath: airflow/dags
+    period: 30s
+
+# cncf.kubernetes provider는 기본 이미지에 포함. 추가 패키지 필요 시:
+# extraPipPackages: ["apache-airflow-providers-cncf-kubernetes"]
+
+webserver:
+  replicas: 1
+  service:
+    type: ClusterIP        # 접속: kubectl port-forward svc/airflow-webserver 8080:8080
+
+scheduler:
+  replicas: 1
+
+# 워커 파드가 econ 네임스페이스 리소스(파드 생성)를 다루도록 기본 SA에 권한이 필요할 수 있음.
+# 차트가 만드는 airflow-worker SA에 RoleBinding을 별도로 추가하거나 rbac.create=true(기본) 사용.
+rbac:
+  create: true
+
+# 첫 로그인 계정 (토이용)
+webserverSecretKeySecretName: ~
+defaultUser:
+  enabled: true
+  username: admin
+  password: admin
+  email: admin@example.com
+  role: Admin
