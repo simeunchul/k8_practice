@@ -1,0 +1,12 @@
+# 기본은 자동 정규화, 저장은 LF
+* text=auto eol=lf
+
+# 컨테이너/쿠버네티스로 들어가는 파일은 반드시 LF
+*.sh    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.py    text eol=lf
+Dockerfile text eol=lf
+
+# 바이너리
+*.parquet binary

@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+
+# 환경 변수 / 시크릿
+.env
+*.local
+
+# 데이터 / 아티팩트
+data/
+output/
+*.parquet
+checkpoint/
+spark-warehouse/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+
+# 쿠버네티스 / 로컬 시크릿
+kubeconfig
+*.kubeconfig
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
