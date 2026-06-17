@@ -23,8 +23,8 @@ helm install airflow apache-airflow/airflow -n econ -f values.yaml
 ## 접속
 
 ```bash
-kubectl port-forward svc/airflow-webserver 8080:8080 -n econ
-# http://localhost:8080  (admin / admin)
+kubectl port-forward svc/airflow-webserver 8090:8080 -n econ
+# http://localhost:8090  (admin / admin)
 ```
 
 ## DAG: `dags/ecos_ingestion_dag.py`

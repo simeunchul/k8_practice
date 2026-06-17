@@ -56,7 +56,7 @@ cd producer && pip install -r requirements.txt && python -m src.producer --mock
 cd consumer && pip install -r requirements.txt && python -m src.consumer
 
 # 5. 브라우저에서 토픽/파티션/오프셋 눈으로 확인
-#    kafka-ui → http://localhost:8080
+#    kafka-ui → http://localhost:8090
 ```
 
 ---

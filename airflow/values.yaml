@@ -29,7 +29,7 @@ dags:
 webserver:
   replicas: 1
   service:
-    type: ClusterIP        # 접속: kubectl port-forward svc/airflow-webserver 8080:8080
+    type: ClusterIP        # 접속: kubectl port-forward svc/airflow-webserver 8090:8080
 
 scheduler:
   replicas: 1

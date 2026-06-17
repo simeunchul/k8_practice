@@ -2,7 +2,7 @@
 # 실행: docker compose up -d
 #   - 호스트(로컬 파이썬)에서 접속:  localhost:29092   (EXTERNAL 리스너)
 #   - 컨테이너 내부에서 접속:        kafka:9092        (INTERNAL 리스너)
-#   - kafka-ui:                      http://localhost:8080
+#   - kafka-ui:                      http://localhost:8090
 
 services:
   kafka:
@@ -36,7 +36,7 @@ services:
       kafka:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "8090:8080"     # 호스트 8090 → 컨테이너 8080 (8080 충돌 회피)
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
