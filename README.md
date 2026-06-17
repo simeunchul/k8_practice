@@ -5,6 +5,8 @@
 
 > **목적**: K8s · Kafka · Spark · AWS 4종을 *하나의 데이터 엔지니어링 파이프라인*으로 관통해 본다.
 > 데이터 소스는 새로 배우지 않도록 이미 익숙한 경제지표 OpenAPI를 그대로 쓴다.
+>
+> **📍 현재 상태(정직 표기)**: **Phase 0(Kafka producer/consumer group·오프셋 커밋) 동작 검증 완료.** Phase 1~4(Spark·K8s·Airflow·EKS)는 코드 작성 단계로 **학습·검증 진행 중**(아래 로드맵 상태 참고). AI로 구조를 먼저 잡고, 각 단계를 직접 돌려보며 동작·장애·튜닝을 이해하는 것이 학습 목표.
 
 ---
 
@@ -30,10 +32,10 @@ ECOS/KOSIS poller          Kafka              Spark Structured        S3 (Parque
 | 단계 | 내용 | 폴더 | 새 기술 | 상태 |
 |------|------|------|---------|------|
 | **Phase 0** | docker-compose로 Kafka 띄우고 `producer → topic → consumer → 오프셋 커밋` | [producer/](producer/), [consumer/](consumer/) | Kafka | ✅ 동작 검증 |
-| **Phase 1** | consumer를 PySpark Structured Streaming으로 교체, 윈도우 집계 → Parquet | [spark/](spark/) | Spark | ✅ 동작 검증 |
-| **Phase 2** | minikube/kind 위로: Strimzi(Kafka) + Spark Operator + producer | [k8s/](k8s/) | **K8s** | 📝 작성 완료 (클러스터 필요) |
-| **Phase 3** | Airflow + KubernetesExecutor로 수집/백필 DAG 오케스트레이션 | [airflow/](airflow/) | K8s·Airflow | 📝 작성 완료 (클러스터 필요) |
-| **Phase 4** | eksctl/Terraform으로 EKS 승격, S3 적재. 하루 켜고 스크린샷 후 destroy | [aws/](aws/) | AWS | 📝 작성 완료 (AWS 계정 필요) |
+| **Phase 1** | consumer를 PySpark Structured Streaming으로 교체, 윈도우 집계 → Parquet | [spark/](spark/) | Spark | 🚧 구현 중 (코드 초안·미검증) |
+| **Phase 2** | minikube/kind 위로: Strimzi(Kafka) + Spark Operator + producer | [k8s/](k8s/) | **K8s** | 🚧 코드 초안 (미실행·클러스터 필요) |
+| **Phase 3** | Airflow + KubernetesExecutor로 수집/백필 DAG 오케스트레이션 | [airflow/](airflow/) | K8s·Airflow | 🚧 코드 초안 (미실행·클러스터 필요) |
+| **Phase 4** | eksctl/Terraform으로 EKS 승격, S3 적재. 하루 켜고 스크린샷 후 destroy | [aws/](aws/) | AWS | 🚧 코드 초안 (미실행·AWS 계정 필요) |
 
 > 시간이 빠듯하면 Phase 0~2(Kafka + Spark + K8s)까지만 해도 "4종 중 3종 손댐 + AWS는 설계까지"가 된다.
 > Phase 4는 최악의 경우 README의 아키텍처 + IaC 코드만 있어도 어필 가능.
