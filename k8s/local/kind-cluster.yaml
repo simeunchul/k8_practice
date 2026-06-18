@@ -1,0 +1,7 @@
+# kind(Kubernetes IN Docker) 로컬 단일노드 클러스터.
+# 오퍼레이터 없이 econ 파이프라인을 K8s 위에 올리는 Phase 2(경량) 전용.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: econ
+nodes:
+  - role: control-plane

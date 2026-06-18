@@ -1,0 +1,30 @@
+# consumer — econ.indicators 를 소비하며 오프셋을 수동 커밋 (K8s Deployment)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: econ-consumer
+  namespace: econ
+  labels:
+    app: econ-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: econ-consumer
+  template:
+    metadata:
+      labels:
+        app: econ-consumer
+    spec:
+      containers:
+        - name: consumer
+          image: econ-consumer:0.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - { name: KAFKA_BOOTSTRAP_SERVERS, value: "kafka:9092" }
+            - { name: KAFKA_TOPIC, value: "econ.indicators" }
+            - { name: KAFKA_GROUP_ID, value: "econ-consumer-1" }
+            - { name: PYTHONUNBUFFERED, value: "1" }   # 컨테이너 로그 실시간 flush
+          resources:
+            requests: { cpu: "50m", memory: "128Mi" }
+            limits: { cpu: "250m", memory: "256Mi" }
